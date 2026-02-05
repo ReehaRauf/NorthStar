@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🛰️  Space Agent Setup Script"
+echo "🛰️  NorthStart Setup Script"
 echo "================================"
 echo ""
 

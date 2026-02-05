@@ -1,8 +1,8 @@
-# Space Agent Architecture
+# NortStar Architecture
 
 ## Overview
 
-Space Agent is a full-stack application that provides real-time space intelligence through satellite tracking, space weather monitoring, and AI-powered explanations.
+NorthStar is a full-stack application that provides real-time space intelligence through satellite tracking, space weather monitoring, and AI-powered explanations.
 
 ## Technology Stack
 
@@ -30,35 +30,35 @@ Space Agent is a full-stack application that provides real-time space intelligen
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                         Frontend                            │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │   Home   │  │  Passes  │  │  Weather │  │   Chat   │   │
-│  └──────────┘  └──────────┘  └──────────┘  └──────────┘   │
-│                         │                                    │
-│                    React Router                              │
-│                         │                                    │
-│                   API Client (Axios)                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐     │
+│  │   Home   │  │  Passes  │  │  Weather │  │   Chat   │     │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘     │
+│                         │                                   │
+│                    React Router                             │
+│                         │                                   │
+│                   API Client (Axios)                        │
 └─────────────────────────│───────────────────────────────────┘
                           │
                      HTTP/REST API
                           │
 ┌─────────────────────────│───────────────────────────────────┐
-│                    FastAPI Backend                           │
+│                    FastAPI Backend                          │
 │  ┌──────────────────────────────────────────────────┐       │
-│  │              API Routes (/api/v1)                 │       │
+│  │              API Routes (/api/v1)                │       │
 │  │  /satellites  /space-weather  /agent  /feed      │       │
 │  └──────────────────────────────────────────────────┘       │
-│                         │                                    │
-│  ┌─────────────┐  ┌─────────────┐  ┌──────────────┐        │
-│  │  Satellite  │  │   Space     │  │   AI Agent   │        │
-│  │  Service    │  │   Weather   │  │   Service    │        │
-│  │             │  │   Service   │  │              │        │
-│  └─────────────┘  └─────────────┘  └──────────────┘        │
-│         │                │                  │                │
-│         │                │                  │                │
-└─────────│────────────────│──────────────────│────────────────┘
-          │                │                  │
-          │                │                  │
-    ┌─────▼─────┐    ┌────▼────┐      ┌─────▼──────┐
+│                         │                                   │
+│  ┌─────────────┐  ┌─────────────┐  ┌──────────────┐         │
+│  │  Satellite  │  │   Space     │  │   AI Agent   │         │ 
+│  │  Service    │  │   Weather   │  │   Service    │         │
+│  │             │  │   Service   │  │              │         │
+│  └─────────────┘  └─────────────┘  └──────────────┘         │
+│         │               │                  │                │
+│         │               │                  │                │
+└─────────│───────────────│──────────────────│────────────────┘
+          │               │                  │
+          │               │                  │
+    ┌─────▼─────┐    ┌────▼────┐      ┌──────▼─────┐
     │   N2YO    │    │  NOAA   │      │ Anthropic  │
     │    API    │    │  SWPC   │      │  Claude    │
     └───────────┘    └─────────┘      └────────────┘

@@ -1,4 +1,4 @@
-# 🛰️ Space Agent
+# 🛰️ NorthStart
 
 > **Mission Control + Science Tutor + Space Weather Watchdog**
 
@@ -75,7 +75,7 @@ Visit `http://localhost:5173` to see the app!
 ## 📁 Project Structure
 
 ```
-space-agent/
+north-star/
 ├── backend/                  # Python FastAPI backend
 │   ├── app/
 │   │   ├── agents/          # AI agent logic

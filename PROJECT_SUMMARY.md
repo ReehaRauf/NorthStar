@@ -1,4 +1,4 @@
-# 🛰️ Space Agent - Project Summary
+# 🛰️ NorthStart - Project Summary
 
 ## What I Built
 

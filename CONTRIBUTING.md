@@ -1,6 +1,6 @@
-# Contributing to Space Agent
+# Contributing to NorthStart
 
-First off, thank you for considering contributing to Space Agent! 🚀
+First off, thank you for considering contributing to NorthStart! 🚀
 
 ## Code of Conduct
 
