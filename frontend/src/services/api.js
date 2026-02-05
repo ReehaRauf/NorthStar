@@ -26,6 +26,11 @@ export const spaceApi = {
     return response.data;
   },
 
+  getISSPosition: async () => {
+    const response = await api.get('/satellites/iss/position');
+    return response.data;
+  },
+
   getSatelliteProfile: async (satelliteName) => {
     const response = await api.get(`/satellites/profile/${satelliteName}`);
     return response.data;

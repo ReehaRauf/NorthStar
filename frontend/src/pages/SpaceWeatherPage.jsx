@@ -33,6 +33,23 @@ export default function SpaceWeatherPage() {
     enabled: !!data,
   });
 
+  // AI Explanation query
+  const { data: aiExplanation, isLoading: explanationLoading } = useQuery({
+    queryKey: ['ai-space-weather-explanation', data],
+    queryFn: async () => {
+      if (!data) return null;
+      
+      const explanation = await spaceApi.explain(
+        `Explain what a Kp index of ${data.kp_current} means for regular people. What should they know? Keep it under 4 sentences.`,
+        'quick',
+        true
+      );
+      return explanation.explanation;
+    },
+    enabled: !!data,
+    staleTime: 600000, // 10 minutes
+  });
+
   return (
     <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -99,6 +116,27 @@ export default function SpaceWeatherPage() {
                 <p className="text-sm text-slate-400">In last 24 hours</p>
               </motion.div>
             </div>
+
+            {/* AI Explanation */}
+            {!explanationLoading && aiExplanation && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8 p-6 rounded-2xl bg-gradient-to-br from-space-600/20 to-aurora-600/20 border border-space-500/30"
+              >
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-space-500/20 flex items-center justify-center">
+                      <span className="text-lg">🤖</span>
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold text-space-300 mb-2">AI Explains</h3>
+                    <p className="text-white leading-relaxed">{aiExplanation}</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
             {/* Risk Levels */}
             <motion.div

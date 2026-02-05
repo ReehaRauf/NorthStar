@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
-import { Satellite, CloudSun, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Satellite, CloudSun, AlertTriangle, TrendingUp, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import { spaceApi } from '../services/api';
 
@@ -66,6 +66,24 @@ export default function HomePage() {
     refetchInterval: 600000, // 10 minutes
   });
 
+  // AI Summary query
+  const { data: aiSummary, isLoading: summaryLoading } = useQuery({
+    queryKey: ['ai-daily-summary', spaceWeather],
+    queryFn: async () => {
+      if (!spaceWeather) return null;
+      
+      const summary = await spaceApi.query(
+        `Give me a brief, engaging 2-3 sentence summary of today's space conditions. Current Kp: ${spaceWeather.kp_current}, GPS risk: ${spaceWeather.gps_degradation_risk}, recent flares: ${spaceWeather.recent_flares?.length || 0}. Make it conversational and interesting.`,
+        null,
+        true,
+        'quick'
+      );
+      return summary.response;
+    },
+    enabled: !!spaceWeather,
+    staleTime: 600000, // 10 minutes
+  });
+
   const getKpStatus = (kp) => {
     if (kp < 4) return 'good';
     if (kp < 6) return 'moderate';
@@ -91,6 +109,23 @@ export default function HomePage() {
             Real-time space intelligence • Satellite tracking • Space weather monitoring
           </p>
         </motion.div>
+
+        {/* AI Daily Summary */}
+        {!summaryLoading && aiSummary && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8 p-6 rounded-2xl bg-gradient-to-br from-space-600/20 to-aurora-600/20 border border-space-500/30"
+          >
+            <div className="flex items-start space-x-3">
+              <Sparkles className="w-6 h-6 text-space-400 flex-shrink-0 mt-1" />
+              <div className="flex-1">
+                <h3 className="text-sm font-semibold text-space-300 mb-2">AI Daily Briefing</h3>
+                <p className="text-white text-lg leading-relaxed">{aiSummary}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Status Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
