@@ -6,7 +6,7 @@ from typing import Optional, List
 from datetime import datetime
 
 from app.models.schemas import (
-    Location, SatellitePass, SatelliteProfile, SpaceWeatherStatus,
+    Location, SatellitePass, SatelliteProfile, SatellitePosition, SpaceWeatherStatus,
     ExplanationRequest, ExplanationResponse, ContextualQuery,
     AlertSubscription, SpaceEvent, ActivityFeed
 )
@@ -67,6 +67,16 @@ async def get_next_iss_pass(
         return pass_info
     except HTTPException:
         raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@satellite_router.get("/iss/position", response_model=SatellitePosition)
+async def get_iss_position():
+    """Get ISS current position"""
+    try:
+        position = await satellite_service.get_iss_position()
+        return position
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

@@ -95,6 +95,51 @@ class SatelliteService:
         
         return iss_passes[0] if iss_passes else None
     
+    async def get_iss_position(self) -> SatellitePosition:
+        """Get ISS current position"""
+        norad_id = self.SATELLITES["ISS"]["norad_id"]
+        
+        if settings.DEMO_MODE:
+            # Return demo position
+            return SatellitePosition(
+                satellite_name="ISS (ZARYA)",
+                timestamp=datetime.utcnow(),
+                latitude=25.5,
+                longitude=-45.2,
+                altitude_km=408,
+                azimuth=0,
+                elevation=0,
+                right_ascension=0,
+                declination=0,
+                distance_km=0
+            )
+        
+        url = f"{self.base_url}/positions/{norad_id}/0/0/0/1"
+        params = {"apiKey": self.api_key}
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(url, params=params, timeout=10.0)
+            response.raise_for_status()
+            data = response.json()
+        
+        if not data.get("positions") or len(data["positions"]) == 0:
+            raise Exception("No position data available")
+        
+        pos = data["positions"][0]
+        
+        return SatellitePosition(
+            satellite_name=data["info"]["satname"],
+            timestamp=datetime.fromtimestamp(pos["timestamp"]),
+            latitude=pos["satlatitude"],
+            longitude=pos["satlongitude"],
+            altitude_km=pos["sataltitude"],
+            azimuth=pos.get("azimuth", 0),
+            elevation=pos.get("elevation", 0),
+            right_ascension=pos.get("ra", 0),
+            declination=pos.get("dec", 0),
+            distance_km=0
+        )
+    
     async def _get_satellite_passes(
         self,
         norad_id: str,
